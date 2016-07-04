@@ -80,6 +80,6 @@ chrome.browserAction.onClicked.addListener((tab) => {
   const urlInfo = document.createElement('a')
   urlInfo.href = tab.url
   if (!/amazon\.co\.jp/.test(urlInfo.hostname)) return console.log('🍣')
-  if (/your-account\/order-history/.test(urlInfo.pathname)) return getAllKindle(tab.id)
+  if (/\/order-history/.test(urlInfo.pathname)) return getAllKindle(tab.id)
   chrome.tabs.sendMessage(tab.id, {action: 'getBookInfo'}, sendToPageUrl)
 })
