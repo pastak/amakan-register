@@ -20,10 +20,8 @@ Chrome Extension for register amakan.net
 
 - 購入履歴ページ ( https://www.amazon.co.jp/gp/css/order-history )に行きます
 - ツールバーに表示されているボタンをクリックすると、登録開始されます。
-- また、次のページが存在する場合は、次のページに遷移するかどうかを尋ねるウィンドウ、が表示されます。このとき、Yesを選択すると自動で次のページに遷移します
-  - ただし、取り込みが自動で開始されるわけではないので、ページ遷移後にもう一度ボタンをクリックする必要があります
+- 「過去6ヶ月」を表示している場合は6ヶ月分、各年間分などを表示している場合はそれの範囲で全件の登録を試みます
 
-※Kindle版のみが取り込み対象になります
-  
+(旧版のスクリーンキャストなので現在は挙動が異なります）
 [![https://gyazo.com/eeff5ca87aff50c74083fc6ad07b3b9d](https://i.gyazo.com/eeff5ca87aff50c74083fc6ad07b3b9d.gif)](https://gyazo.com/eeff5ca87aff50c74083fc6ad07b3b9d)
 
