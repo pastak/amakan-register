@@ -4,16 +4,30 @@ const fetchPage = (url) => new Promise((ok) => {
     .then(ok)
 })
 
+const parseOrderSummry = (html) => {
+  const targetDoc = document.createElement('html')
+  targetDoc.innerHTML = html
+  ;[...targetDoc.querySelectorAll('.sample b > a')]
+    .forEach((a) => {
+      chrome.runtime.sendMessage(chrome.runtime.id, {url: a.href, title: a.textContent, imageUrl: null})
+    })
+}
+
 const scrapingPage = (html) => {
   const targetDoc = document.createElement('html')
   targetDoc.innerHTML = html
   ;[...targetDoc.querySelectorAll('.order > .a-box .a-fixed-right-grid .a-fixed-right-grid-col.a-col-left .a-fixed-left-grid.a-spacing-none .a-fixed-left-grid-inner .a-fixed-left-grid-col.a-col-right')]
-    .forEach((item) => {
+    .forEach((item, index) => {
       const url = item.querySelector('.a-link-normal').href
       const title = item.querySelector('.a-link-normal').textContent.replace(/^[\s\t\n]*(.+)[\s\t\n]*$/, '$1')
       const imageUrl = item.parentNode.querySelector('img').src
-      chrome.runtime.sendMessage(chrome.runtime.id, {url, title, imageUrl})
+      window.setTimeout(() => {
+        chrome.runtime.sendMessage(chrome.runtime.id, {url, title, imageUrl})
+      }, 100 * index)
     })
+  // まとめ買い対策
+  ;[...targetDoc.querySelectorAll('.a-size-medium.a-link-emphasis')]
+    .forEach((a) => fetchPage(a.href).then(parseOrderSummry))
 }
 
 const buildQuery = (baseQuery, index) => {

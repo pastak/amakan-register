@@ -13,7 +13,7 @@ const sendToPageUrl = ({url, title, imageUrl}) => {
   xhr.onreadystatechange = () => {
     if (!/amakan\.net\/products\//.test(xhr.responseURL)) return
     const bookPage = xhr.responseURL
-    console.log(bookPage, url)
+    if (xhr.readyState === 4) console.log(title, bookPage, url)
     const html = document.createElement('html')
     html.innerHTML = xhr.responseText
     const csrfToken = html.querySelector('meta[name=csrf-token]').content
