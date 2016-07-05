@@ -51,5 +51,5 @@ chrome.browserAction.onClicked.addListener((tab) => {
         chrome.tabs.sendMessage(tab.id, {action: 'scrapingAllHistory'})
       })
   }
-  chrome.tabs.sendMessage(tab.id, {action: 'getBookInfo'}, sendToPageUrl)
+  chrome.tabs.create({url: 'https://amakan.net/search?query=' + tab.url})
 })
