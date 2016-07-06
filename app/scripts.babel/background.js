@@ -16,7 +16,12 @@ const sendPageUrl = ({url, title, imageUrl}) => {
     if (xhr.readyState === 4) console.log(title, bookPage, url)
     const html = document.createElement('html')
     html.innerHTML = xhr.responseText
-    const csrfToken = html.querySelector('meta[name=csrf-token]').content
+    let csrfToken
+    try {
+      csrfToken = html.querySelector('meta[name=csrf-token]').content
+    } catch (e) {
+      return
+    }
     window.fetch(bookPage + '/taste', {
       method: 'POST',
       headers: {

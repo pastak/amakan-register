@@ -16,26 +16,20 @@ const parseOrderSummry = (html) => {
 const scrapingPage = (html) => {
   const targetDoc = document.createElement('html')
   targetDoc.innerHTML = html
-  ;[...targetDoc.querySelectorAll('.order > .a-box .a-fixed-right-grid .a-fixed-right-grid-col.a-col-left .a-fixed-left-grid.a-spacing-none .a-fixed-left-grid-inner .a-fixed-left-grid-col.a-col-right')]
-    .forEach((item, index) => {
+  const items = [...targetDoc.querySelectorAll('.order > .a-box .a-fixed-right-grid .a-fixed-right-grid-col.a-col-left .a-fixed-left-grid.a-spacing-none .a-fixed-left-grid-inner .a-fixed-left-grid-col.a-col-right')]
+  if (items.length < 1) return false
+  items.forEach((item, index) => {
       const url = item.querySelector('.a-link-normal').href
       const title = item.querySelector('.a-link-normal').textContent.replace(/^[\s\t\n]*(.+)[\s\t\n]*$/, '$1')
       const imageUrl = item.parentNode.querySelector('img').src
       window.setTimeout(() => {
         chrome.runtime.sendMessage(chrome.runtime.id, {url, title, imageUrl})
-      }, 100 * index)
+      }, 200 * index)
     })
   // まとめ買い対策
   ;[...targetDoc.querySelectorAll('.a-size-medium.a-link-emphasis')]
     .forEach((a) => fetchPage(a.href).then(parseOrderSummry))
-}
-
-const buildQuery = (baseQuery, index) => {
-  return baseQuery.map((t) => {
-    let [key, value] = t
-    if (key === 'startIndex') value = 10 * index
-    return [key, value].join('=')
-  }).join('&')
+  return true
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -47,15 +41,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       sendResponse({url, title, imageUrl})
     },
     scrapingAllHistory: () => {
-      const pathNamePart = '/gp/your-account/order-history/ref=oh_aui_pagination_1_'
-      const queries = document.querySelector('.a-selected > a').search.substr(1).split('&')
-        .map((part) => part.split('='))
-      let t = document.querySelectorAll('.a-normal')
-      const pageCount = +t[t.length - 1].textContent - 1
-      for (let i = 0; i <= pageCount; i++) {
-        const url = pathNamePart + (i + 1) + '?' + buildQuery(queries, i)
-        fetchPage(url)
-          .then((a) => window.setTimeout(() => scrapingPage(a), 1000 * i))
+      for(let year = (new Date()).getFullYear(); year >= 1996; year--) {
+        const pathNamePart = '/gp/your-account/order-history/ref=oh_aui_pagination_1_'
+        const request = (i) => {
+          const url = pathNamePart + (i + 1) + '?startIndex=' + (i * 10) + '&orderFilter=year-' + year
+          fetchPage(url)
+            .then((a) => scrapingPage(a) && window.setTimeout(() => request(++i), 2500))
+        }
+        request(0)
       }
     }
   }
