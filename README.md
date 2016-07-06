@@ -20,8 +20,8 @@ Chrome Extension for register amakan.net
 
 - 購入履歴ページ ( https://www.amazon.co.jp/gp/css/order-history )に行きます
 - ツールバーに表示されているボタンをクリックすると、登録開始されます。
-- 「過去6ヶ月」を表示している場合は6ヶ月分、各年間分などを表示している場合はそれの範囲で全件の登録を試みます
+- Amazonの購入履歴を1996年まで遡ってインポートを実行します
+- 最初はゆっくりですが、ちょっと待つと勢い良く通知が出ると思います
+- 終わりのタイミングの通知とかは特に出ません
 
-(旧版のスクリーンキャストなので現在は挙動が異なります）
-[![https://gyazo.com/eeff5ca87aff50c74083fc6ad07b3b9d](https://i.gyazo.com/eeff5ca87aff50c74083fc6ad07b3b9d.gif)](https://gyazo.com/eeff5ca87aff50c74083fc6ad07b3b9d)
-
+[![https://gyazo.com/50499dec6b002b700056f8b4338f4460](https://i.gyazo.com/50499dec6b002b700056f8b4338f4460.gif)](https://gyazo.com/50499dec6b002b700056f8b4338f4460)
