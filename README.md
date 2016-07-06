@@ -2,6 +2,8 @@
 
 Chrome Extension for register amakan.net
 
+[![https://gyazo.com/9818b330fe1c97867013745e7ad3d671](https://i.gyazo.com/9818b330fe1c97867013745e7ad3d671.gif)](https://gyazo.com/9818b330fe1c97867013745e7ad3d671)
+
 ## Install
 
 - `$ git clone git@github.com:pastak/amakan-register.git`
@@ -12,9 +14,9 @@ Chrome Extension for register amakan.net
 
 ## Usage
 
-### 特定の書籍を読んだことにしたい
+### 特定の書籍のamakan詳細ページを開きたい
 
-- その書籍のページに行って、ツールバーに表示されているボタンを押すと登録されます
+- その書籍のページに行って、ツールバーに表示されているボタンを押すとamakanのページが開きます
 
 ### 購入履歴からインポートしたい
 
@@ -23,5 +25,3 @@ Chrome Extension for register amakan.net
 - Amazonの購入履歴を1996年まで遡ってインポートを実行します
 - 最初はゆっくりですが、ちょっと待つと勢い良く通知が出ると思います
 - 終わりのタイミングの通知とかは特に出ません
-
-[![https://gyazo.com/50499dec6b002b700056f8b4338f4460](https://i.gyazo.com/50499dec6b002b700056f8b4338f4460.gif)](https://gyazo.com/50499dec6b002b700056f8b4338f4460)
