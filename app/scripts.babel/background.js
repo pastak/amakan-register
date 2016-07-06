@@ -7,7 +7,7 @@ const notify = (opt) => new Promise((ok) => {
   chrome.notifications.create(opt, ok)
 })
 
-const sendToPageUrl = ({url, title, imageUrl}) => {
+const sendPageUrl = ({url, title, imageUrl}) => {
   const xhr = new XMLHttpRequest()
   xhr.open('GET', `https://amakan.net/search?query=${url}`)
   xhr.onreadystatechange = () => {
@@ -37,7 +37,7 @@ const sendToPageUrl = ({url, title, imageUrl}) => {
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  sendToPageUrl(request)
+  sendPageUrl(request)
 })
 
 chrome.browserAction.onClicked.addListener((tab) => {
