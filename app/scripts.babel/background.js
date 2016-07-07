@@ -2,16 +2,41 @@
 
 let nextPageUrl = null
 let notificationId = null
+let Q = []
+Q.workingCount = 0
+Q.finishedCount = 0
+Q.execShift = () => {
+  const action = Q.shift()
+  Q.workingCount++
+  try {
+    action().then(() => {
+      Q.workingCount--
+      Q.finishedCount++
+      Q.execShift()
+    }).catch((e) => {
+      Q.finishedCount++
+      Q.workingCount--
+    })
+  } catch (e) {
+    console.log(e, typeof action, action)
+  }
+}
+Q.start = () => {
+  Q.execShift()
+}
 
 const notify = (opt) => new Promise((ok) => {
   chrome.notifications.create(opt, ok)
 })
 
-const sendPageUrl = ({url, title, imageUrl}) => {
+let j = 0
+
+const sendPageUrl = ({url, title, imageUrl}) => new Promise((ok) => {
   const xhr = new XMLHttpRequest()
   xhr.open('GET', `https://amakan.net/search?query=${url}`)
   xhr.onreadystatechange = () => {
-    if (!/amakan\.net\/products\//.test(xhr.responseURL)) return
+    if (xhr.readyState < 4) return
+    if (xhr.readyState === 4 && !/amakan\.net\/products\//.test(xhr.responseURL)) return ok()
     const bookPage = xhr.responseURL
     if (xhr.readyState === 4) console.log(title, bookPage, url)
     const html = document.createElement('html')
@@ -20,7 +45,7 @@ const sendPageUrl = ({url, title, imageUrl}) => {
     try {
       csrfToken = html.querySelector('meta[name=csrf-token]').content
     } catch (e) {
-      return
+      return ok()
     }
     window.fetch(bookPage + '/taste', {
       method: 'POST',
@@ -33,16 +58,18 @@ const sendPageUrl = ({url, title, imageUrl}) => {
         chrome.notifications.update(notificationId, {
           title,
           iconUrl: imageUrl,
-          message: '登録成功',
+          message: '登録成功(' + (Q.finishedCount + 1) + '/' + (Q.length + Q.finishedCount + 1) + ')',
           priority: 0
         })
+        ok()
       })
   }
   xhr.send(null)
-}
+})
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  sendPageUrl(request)
+  Q.push(() => sendPageUrl(request))
+  if (Q.length > 0 && Q.workingCount <= 2) Q.start()
 })
 
 chrome.browserAction.onClicked.addListener((tab) => {

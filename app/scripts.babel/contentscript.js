@@ -50,7 +50,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         const request = (i) => {
           const url = pathNamePart + (i + 1) + '?startIndex=' + (i * 10) + '&orderFilter=year-' + year
           fetchPage(url)
-            .then((a) => scrapingPage(a) && window.setTimeout(() => request(++i), 2500))
+            .then((a) => scrapingPage(a) && window.setTimeout(() => request(++i), 1000))
         }
         request(0)
       }
