@@ -19,8 +19,12 @@ const scrapingPage = (html) => {
   const items = [...targetDoc.querySelectorAll('.order > .a-box .a-fixed-right-grid .a-fixed-right-grid-col.a-col-left .a-fixed-left-grid.a-spacing-none .a-fixed-left-grid-inner .a-fixed-left-grid-col.a-col-right')]
   if (items.length < 1) return false
   items.forEach((item, index) => {
-      const url = item.querySelector('.a-link-normal').href
-      const title = item.querySelector('.a-link-normal').textContent.replace(/^[\s\t\n]*(.+)[\s\t\n]*$/, '$1')
+      const link = item.querySelector('.a-link-normal')
+      if (!link) {
+          return;
+      }
+      const url = link.href
+      const title = link.textContent.replace(/^[\s\t\n]*(.+)[\s\t\n]*$/, '$1')
       const imageUrl = item.parentNode.querySelector('img').src
       window.setTimeout(() => {
         chrome.runtime.sendMessage(chrome.runtime.id, {url, title, imageUrl})
