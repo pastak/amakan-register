@@ -1,3 +1,15 @@
+
+
+
+
+
+Moved https://github.com/amakan/amakankan
+
+
+
+
+
+
 # amakan-register
 
 Chrome Extension for register amakan.net
